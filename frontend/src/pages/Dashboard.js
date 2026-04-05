@@ -17,7 +17,7 @@ function Dashboard() {
 
   const fetchExperiences = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/experiences");
+      const res = await axios.get("https://placement-portal-v7e6.onrender.com/experiences");
       setData(res.data);
     } catch (err) {
       console.log(err);

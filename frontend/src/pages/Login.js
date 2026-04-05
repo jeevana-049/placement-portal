@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -6,16 +7,24 @@ function Login() {
   const [user, setUser] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
-  const handleLogin = () => {
+const handleLogin = () => {
   if (user.email && user.password) {
-    
-    // 👑 Simple admin logic
-    const role = user.email === "admin@gmail.com" ? "admin" : "user";
 
-    localStorage.setItem("user", JSON.stringify({ ...user, role }));
+    // ✅ SIMPLE ADMIN CHECK
+    const role =
+      user.email === "admin@gmail.com"
+        ? "admin"
+        : "student";
+
+    // ✅ SAVE USER
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ email: user.email, role })
+    );
 
     alert("Login Successful ✅");
     navigate("/dashboard");
+
   } else {
     alert("Enter details!");
   }

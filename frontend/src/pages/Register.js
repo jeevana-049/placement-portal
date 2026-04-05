@@ -15,7 +15,7 @@ function Register() {
     return;
   }
     try {
-      const res = await axios.post("http://localhost:5000/register", {
+      const res = await axios.post("https://placement-portal-v7e6.onrender.com/register", {
         name,
         email,
         password,

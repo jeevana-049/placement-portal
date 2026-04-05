@@ -11,7 +11,7 @@ function StudyContent() {
   const fetchQuestions = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/questions/${topic}`
+        `https://placement-portal-v7e6.onrender.com/questions/${topic}`
       );
       setQuestions(res.data);
     } catch (err) {

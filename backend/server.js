@@ -19,11 +19,12 @@ mongoose.connect("mongodb://127.0.0.1:27017/placementDB")
 // route
 app.get("/", (req, res) => {
   res.send("Server + Database working 🚀");
-});
+});sessionStorage
 
 // start server
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log("Server running on port ");
 });
 
 app.post("/register", async (req, res) => {
@@ -41,17 +42,22 @@ app.post("/login", async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
 
     if (!user) {
-      return res.send("User not found ❌");
+      return res.status(404).json({ message: "User not found" });
     }
 
-    if (user.password === req.body.password) {
-      res.send("Login successful ✅");
-    } else {
-      res.send("Wrong password ❌");
+    if (user.password !== req.body.password) {
+      return res.status(400).json({ message: "Wrong password" });
     }
+
+    // ✅ SEND ROLE HERE
+    res.json({
+      email: user.email,
+      role: user.role
+    });
 
   } catch (err) {
-    res.send("Error: " + err);
+    console.log(err);
+    res.status(500).json("Server error");
   }
 });
 

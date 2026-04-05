@@ -27,7 +27,7 @@ function Upload() {
         return;
       }
 window.location.href = "/dashboard";
-      await axios.post("http://localhost:5000/experience", form);
+      await axios.post("https://placement-portal-v7e6.onrender.com/experience", form);
 
       alert("Uploaded Successfully ✅");
 

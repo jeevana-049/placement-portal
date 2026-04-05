@@ -14,7 +14,7 @@ function Admin() {
   // 🔄 FETCH ALL QUESTIONS
   const fetchQuestions = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/questions");
+      const res = await axios.get("https://placement-portal-v7e6.onrender.com/questions");
       setQuestions(res.data);
     } catch (err) {
       console.log(err);
@@ -28,7 +28,7 @@ function Admin() {
   // ➕ ADD QUESTION
   const addQuestion = async () => {
     try {
-      await axios.post("http://localhost:5000/question", data);
+      await axios.post("https://placement-portal-v7e6.onrender.com/question", data);
       alert("Added ✅");
 
       setData({ topic: "aptitude", question: "", tip: "" });
@@ -41,7 +41,7 @@ function Admin() {
   // ❌ DELETE QUESTION
   const deleteQuestion = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/question/${id}`);
+      await axios.delete(`https://placement-portal-v7e6.onrender.com/question/${id}`);
       alert("Deleted ❌");
       fetchQuestions();
     } catch (err) {

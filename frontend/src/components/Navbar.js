@@ -10,6 +10,14 @@ function Navbar() {
     navigate("/login");
   };
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
+{user?.role === "admin" && (
+  <button onClick={() => navigate("/admin")}>
+    Admin
+  </button>
+)}
+
   return (
     <div style={styles.navbar}>
       
