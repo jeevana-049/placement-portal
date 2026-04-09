@@ -1,32 +1,32 @@
 export const themes = {
   home: {
-    bg: "linear-gradient(135deg,#1e3c72,#2a5298)",
-    glow: "#00c6ff"
+    bg: "linear-gradient(135deg,#f8fafc,#e2e8f0)",
+    glow: "rgba(0,0,0,0.1)"
   },
   study: {
-    bg: "linear-gradient(135deg,#134e5e,#71b280)",
-    glow: "#00ff9f"
+    bg: "linear-gradient(135deg,#f1f5f9,#e2e8f0)",
+    glow: "rgba(0,0,0,0.08)"
   },
   upload: {
-    bg: "linear-gradient(135deg,#42275a,#734b6d)",
-    glow: "#ff00ff"
+    bg: "linear-gradient(135deg,#fdf2f8,#f8fafc)",
+    glow: "rgba(0,0,0,0.08)"
   },
   admin: {
-    bg: "linear-gradient(135deg,#000000,#434343)",
-    glow: "#ff4d4d"
+    bg: "linear-gradient(135deg,#f1f5f9,#cbd5f5)",
+    glow: "rgba(0,0,0,0.12)"
   },
   dashboard: {
-    bg: "linear-gradient(135deg,#0f2027,#203a43,#2c5364)",
-    glow: "#00ffff"
+    bg: "linear-gradient(135deg,#f8fafc,#e2e8f0)",
+    glow: "rgba(0,0,0,0.1)"
   }
 };
+
 export const cardStyle = (glow) => ({
-  background: "rgba(255,255,255,0.1)",
-  backdropFilter: "blur(10px)",
-  borderRadius: "15px",
+  background: "white",
+  borderRadius: "12px",
   padding: "20px",
   margin: "20px auto",
   width: "60%",
-  color: "white",
-  boxShadow: `0 0 20px ${glow}`
+  color: "#1e293b",
+  boxShadow: `0 4px 12px ${glow}`
 });
