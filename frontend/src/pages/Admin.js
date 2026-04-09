@@ -1,67 +1,73 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 
 function Admin() {
-  const [data, setData] = useState({
-    topic: "aptitude",
-    question: "",
-    tip: "",
-  });
+  const [experiences, setExperiences] = useState([]);
+  const [question, setQuestion] = useState("");
+  const [category, setCategory] = useState("aptitude");
 
-  const [questions, setQuestions] = useState([]);
+  useEffect(() => {
+    fetchExperiences();
+  }, []);
 
-  // 🔄 FETCH ALL QUESTIONS
-  const fetchQuestions = async () => {
+  // 📥 GET ALL EXPERIENCES
+  const fetchExperiences = async () => {
     try {
-      const res = await axios.get("https://placement-portal-v7e6.onrender.com/questions");
-      setQuestions(res.data);
+      const res = await axios.get(
+        "https://placement-portal-v7e6.onrender.com/admin/experiences"
+      );
+      setExperiences(res.data);
     } catch (err) {
       console.log(err);
     }
   };
 
-  useEffect(() => {
-    fetchQuestions();
-  }, []);
+  // ✅ APPROVE
+  const approve = async (id) => {
+    await axios.put(
+      `https://placement-portal-v7e6.onrender.com/admin/approve/${id}`
+    );
+    fetchExperiences();
+  };
+
+  // ❌ DELETE
+  const remove = async (id) => {
+    await axios.delete(
+      `https://placement-portal-v7e6.onrender.com/admin/delete/${id}`
+    );
+    fetchExperiences();
+  };
 
   // ➕ ADD QUESTION
   const addQuestion = async () => {
-    try {
-      await axios.post("https://placement-portal-v7e6.onrender.com/question", data);
-      alert("Added ✅");
-
-      setData({ topic: "aptitude", question: "", tip: "" });
-      fetchQuestions(); // refresh list
-    } catch (err) {
-      console.log(err);
+    if (!question) {
+      alert("Enter question");
+      return;
     }
-  };
 
-  // ❌ DELETE QUESTION
-  const deleteQuestion = async (id) => {
-    try {
-      await axios.delete(`https://placement-portal-v7e6.onrender.com/question/${id}`);
-      alert("Deleted ❌");
-      fetchQuestions();
-    } catch (err) {
-      console.log(err);
-    }
+    await axios.post(
+      "https://placement-portal-v7e6.onrender.com/add-question",
+      { category, question }
+    );
+
+    alert("Question Added ✅");
+    setQuestion("");
   };
 
   return (
     <div style={styles.container}>
       <Navbar />
 
-      <div style={styles.box}>
-        <h2>Admin Panel 👑</h2>
+      <h2 style={styles.heading}>Admin Panel</h2>
 
-        {/* SELECT TOPIC */}
+      {/* ADD QUESTION */}
+      <div style={styles.box}>
+        <h3>Add StudyHub Question</h3>
+
         <select
-          value={data.topic}
-          onChange={(e) =>
-            setData({ ...data, topic: e.target.value })
-          }
+          onChange={(e) => setCategory(e.target.value)}
+          style={styles.input}
         >
           <option value="aptitude">Aptitude</option>
           <option value="coding">Coding</option>
@@ -69,44 +75,35 @@ function Admin() {
           <option value="interview">Interview</option>
         </select>
 
-        {/* QUESTION INPUT */}
-        <input
-          placeholder="Enter question"
-          value={data.question}
-          onChange={(e) =>
-            setData({ ...data, question: e.target.value })
-          }
+        <textarea
+          placeholder="Enter Question"
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+          style={styles.textarea}
         />
 
-        {/* TIP INPUT */}
-        <input
-          placeholder="Enter tip (optional)"
-          value={data.tip}
-          onChange={(e) =>
-            setData({ ...data, tip: e.target.value })
-          }
-        />
-
-        <button onClick={addQuestion}>Add Question</button>
+        <button onClick={addQuestion} style={styles.button}>
+          Add Question
+        </button>
       </div>
 
-      {/* SHOW QUESTIONS */}
-      <div style={styles.list}>
-        {questions.length === 0 ? (
-          <p>No questions yet</p>
-        ) : (
-          questions.map((q) => (
-            <div key={q._id} style={styles.card}>
-              <p>📌 {q.question}</p>
-              {q.tip && <p>💡 {q.tip}</p>}
+      {/* EXPERIENCES */}
+      <h3 style={styles.heading}>Manage Experiences</h3>
 
-              <button onClick={() => deleteQuestion(q._id)}>
-                Delete ❌
-              </button>
-            </div>
-          ))
-        )}
-      </div>
+      {experiences.map((exp) => (
+        <div key={exp._id} style={styles.card}>
+          <h4>{exp.company}</h4>
+          <p>{exp.rounds}</p>
+
+          <button onClick={() => approve(exp._id)} style={styles.approve}>
+            Approve ✅
+          </button>
+
+          <button onClick={() => remove(exp._id)} style={styles.delete}>
+            Delete ❌
+          </button>
+        </div>
+      ))}
     </div>
   );
 }
@@ -114,31 +111,57 @@ function Admin() {
 const styles = {
   container: {
     minHeight: "100vh",
-    background: "linear-gradient(135deg,#141e30,#243b55)",
+    background: "linear-gradient(135deg,#1e3c72,#2a5298)",
     color: "white",
+    paddingBottom: "40px",
   },
-
+  heading: {
+    textAlign: "center",
+    marginTop: "20px",
+  },
   box: {
-    width: "350px",
-    margin: "40px auto",
+    width: "400px",
+    margin: "20px auto",
+    padding: "20px",
     background: "white",
     color: "black",
-    padding: "20px",
-    borderRadius: "10px",
+    borderRadius: "12px",
     display: "flex",
     flexDirection: "column",
     gap: "10px",
   },
-
-  list: {
-    padding: "20px",
+  input: {
+    padding: "10px",
   },
-
+  textarea: {
+    padding: "10px",
+  },
+  button: {
+    background: "#4caf50",
+    color: "white",
+    padding: "10px",
+    border: "none",
+  },
   card: {
-    background: "rgba(255,255,255,0.1)",
+    background: "white",
+    color: "black",
+    margin: "15px auto",
     padding: "15px",
-    margin: "10px",
+    width: "60%",
     borderRadius: "10px",
+  },
+  approve: {
+    background: "green",
+    color: "white",
+    marginRight: "10px",
+    padding: "8px",
+    border: "none",
+  },
+  delete: {
+    background: "red",
+    color: "white",
+    padding: "8px",
+    border: "none",
   },
 };
 
