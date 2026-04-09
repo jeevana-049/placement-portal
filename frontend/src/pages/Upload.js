@@ -16,15 +16,10 @@ function Upload() {
     tips: "",
   });
 
-  // 🔐 CHECK LOGIN + BLOCK ADMIN
+   // 🔐 CHECK LOGIN
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    if (user && user.role === "user") {
-      setLoggedIn(true);
-    } else {
-      setLoggedIn(false);
-    }
+    const user = localStorage.getItem("user");
+    if (user) setLoggedIn(true);
   }, []);
 
   // 📤 SUBMIT FUNCTION
