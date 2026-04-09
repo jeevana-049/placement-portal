@@ -132,7 +132,7 @@ function Admin() {
       <h3 style={styles.heading}>Manage Questions</h3>
 
       {questions.map((q) => (
-        <div key={q._id} style={cardStyle(theme.glow)}>
+        <div key={q._id} style={cardStyle()}>
           <p>{q.question}</p>
 
           <button
@@ -148,7 +148,7 @@ function Admin() {
       <h3 style={styles.heading}>Manage Experiences</h3>
 
       {experiences.map((exp) => (
-        <div key={exp._id} style={cardStyle(theme.glow)}>
+        <div key={exp._id} style={cardStyle()}>
           <h4>{exp.company}</h4>
           <p>{exp.rounds}</p>
 

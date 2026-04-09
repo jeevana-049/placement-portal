@@ -37,7 +37,7 @@ function Dashboard() {
         </p>
       ) : (
         experiences.map((exp) => (
-          <div key={exp._id} style={cardStyle(theme.glow)}>
+          <div key={exp._id} style={cardStyle()}>
             <h3>{exp.company}</h3>
             <p>{exp.rounds}</p>
             <p>{exp.technicalQuestions}</p>

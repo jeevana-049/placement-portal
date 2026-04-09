@@ -44,10 +44,10 @@ function Home() {
         <h2 style={styles.sectionTitle}>✨ Key Features</h2>
 
         <div style={styles.grid}>
-          <div style={cardStyle(theme.glow)}>📊 Real Interview Experiences</div>
-          <div style={cardStyle(theme.glow)}>📚 Structured Study Hub</div>
-          <div style={cardStyle(theme.glow)}>🎯 Important Questions & Tips</div>
-          <div style={cardStyle(theme.glow)}>👥 Peer Knowledge Sharing</div>
+          <div style={cardStyle()}>📊 Real Interview Experiences</div>
+          <div style={cardStyle()}>📚 Structured Study Hub</div>
+          <div style={cardStyle()}>🎯 Important Questions & Tips</div>
+          <div style={cardStyle()}>👥 Peer Knowledge Sharing</div>
         </div>
       </div>
 
@@ -67,10 +67,10 @@ function Home() {
         <h2 style={styles.sectionTitle}>⚙️ Tech Stack</h2>
 
         <div style={styles.grid}>
-          <div style={cardStyle(theme.glow)}>Frontend: React.js</div>
-          <div style={cardStyle(theme.glow)}>Backend: Node.js + Express</div>
-          <div style={cardStyle(theme.glow)}>Database: MongoDB</div>
-          <div style={cardStyle(theme.glow)}>Deployment: Render + Netlify</div>
+          <div style={cardStyle()}>Frontend: React.js</div>
+          <div style={cardStyle()}>Backend: Node.js + Express</div>
+          <div style={cardStyle()}>Database: MongoDB</div>
+          <div style={cardStyle()}>Deployment: Render + Netlify</div>
         </div>
       </div>
 

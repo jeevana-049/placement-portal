@@ -8,6 +8,7 @@ import StudyContent from "./pages/StudyContent";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
 import Saved from "./pages/Saved";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/login" element={<Login />} />
         <Route path="/saved" element={<Saved />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </BrowserRouter>
   );

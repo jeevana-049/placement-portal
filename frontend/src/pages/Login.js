@@ -52,6 +52,16 @@ const handleLogin = () => {
         />
 
         <button onClick={handleLogin}>Login</button>
+        
+        <p style={{ marginTop: "10px" }}>
+  New user?{" "}
+  <span
+    style={{ color: "#2563eb", cursor: "pointer" }}
+    onClick={() => navigate("/register")}
+  >
+    Register here
+  </span>
+</p>
       </div>
     </div>
   );
