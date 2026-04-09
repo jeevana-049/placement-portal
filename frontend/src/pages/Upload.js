@@ -26,7 +26,7 @@ function Upload() {
         alert("Please fill required fields");
         return;
       }
-window.location.href = "/dashboard";
+
       await axios.post("https://placement-portal-v7e6.onrender.com/experience", form);
 
       alert("Uploaded Successfully ✅");
@@ -40,8 +40,11 @@ window.location.href = "/dashboard";
         tips: "",
       });
 
+      window.location.href = "/dashboard";
+
     } catch (err) {
       console.log(err);
+      alert("Upload failed");
     }
   };
 

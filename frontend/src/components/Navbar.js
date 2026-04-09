@@ -3,20 +3,14 @@ import { FaHome, FaBook, FaUpload, FaBriefcase, FaStar, FaUserShield } from "rea
 
 function Navbar() {
   const navigate = useNavigate();
+
+  // ✅ ONLY ONE TIME
   const user = JSON.parse(localStorage.getItem("user"));
 
   const handleLogout = () => {
     localStorage.removeItem("user");
     navigate("/login");
   };
-
-  const user = JSON.parse(localStorage.getItem("user"));
-
-{user?.role === "admin" && (
-  <button onClick={() => navigate("/admin")}>
-    Admin
-  </button>
-)}
 
   return (
     <div style={styles.navbar}>
