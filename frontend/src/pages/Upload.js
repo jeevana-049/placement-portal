@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 function Upload() {
+  const navigate = useNavigate();
+
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [form, setForm] = useState({
@@ -13,10 +16,15 @@ function Upload() {
     tips: "",
   });
 
-  // 🔐 CHECK LOGIN
+  // 🔐 CHECK LOGIN + BLOCK ADMIN
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) setLoggedIn(true);
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (user && user.role === "user") {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
   }, []);
 
   // 📤 SUBMIT FUNCTION
@@ -27,7 +35,11 @@ function Upload() {
         return;
       }
 
-      await axios.post("https://placement-portal-v7e6.onrender.com/experience", form);
+      // ✅ CORRECT BACKEND URL
+      await axios.post(
+        "https://placement-portal-v7e6.onrender.com/experience",
+        form
+      );
 
       alert("Uploaded Successfully ✅");
 
@@ -40,11 +52,12 @@ function Upload() {
         tips: "",
       });
 
-      window.location.href = "/dashboard";
+      // ✅ FIXED REDIRECT (NO 404)
+      navigate("/dashboard");
 
     } catch (err) {
       console.log(err);
-      alert("Upload failed");
+      alert("Upload failed ❌");
     }
   };
 
@@ -55,7 +68,7 @@ function Upload() {
       <h2 style={styles.heading}>Upload Experience</h2>
 
       {!loggedIn ? (
-        <h3 style={styles.msg}>🔒 Login to upload experience</h3>
+        <h3 style={styles.msg}>🔒 Only users can upload</h3>
       ) : (
         <div style={styles.box}>
           
@@ -119,18 +132,15 @@ const styles = {
     background: "linear-gradient(135deg,#0f2027,#203a43,#2c5364)",
     color: "white",
   },
-
   heading: {
     textAlign: "center",
     marginTop: "20px",
   },
-
   msg: {
     textAlign: "center",
     marginTop: "50px",
     color: "#ffcc00",
   },
-
   box: {
     width: "450px",
     margin: "40px auto",
@@ -141,15 +151,6 @@ const styles = {
     flexDirection: "column",
     gap: "15px",
   },
-
-  input: {
-    padding: "4px",
-    fontSize: "16px",
-    borderRadius: "10px",
-    border: "1px solid #ccc",
-    width: "100%",
-  },
-
   textarea: {
     padding: "16px",
     fontSize: "16px",
@@ -157,7 +158,6 @@ const styles = {
     border: "1px solid #ccc",
     minHeight: "80px",
   },
-
   button: {
     padding: "14px",
     fontSize: "16px",
