@@ -12,7 +12,7 @@ function Dashboard() {
   const fetchExperiences = async () => {
     try {
       const res = await axios.get(
-        "https://placement-backend.onrender.com/experiences"
+        "https://placement-portal-v7e6.onrender.com/experiences"
       );
       setData(res.data);
     } catch (err) {
