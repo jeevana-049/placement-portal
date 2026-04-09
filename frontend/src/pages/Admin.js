@@ -47,7 +47,7 @@ function Admin() {
     }
 
     await axios.post(
-      "https://placement-portal-v7e6.onrender.com/add-question",
+      "https://placement-portal-v7e6.onrender.com/admin/add-question",
       { category, question }
     );
 

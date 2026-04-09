@@ -15,14 +15,23 @@ const Question = require("./models/Question");
 // ================= DATABASE =================
 
 // ✅ USE ENV VARIABLE (IMPORTANT)
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("Database Connected ✅"))
-  .catch((err) => console.log(err));
+require("dotenv").config();
+const mongoose = require("mongoose");
+
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("Database Connected ✅"))
+.catch((err) => {
+  console.log("❌ DB ERROR:");
+  console.log(err.message);
+});
 
 // ================= ROUTES =================
 
 // Test route
-app.get("/", (req, res) => {
+app.get("/test", (req, res) => {
   res.send("Server + Database working 🚀");
 });
 
@@ -116,7 +125,7 @@ app.delete("/admin/delete/:id", async (req, res) => {
 // ================= QUESTIONS =================
 
 // Add question
-app.post("/add-question", async (req, res) => {
+app.post("/admin/add-question", async (req, res) => {
   const { category, question } = req.body;
   await Question.create({ category, question });
   res.send("Question added");
@@ -129,7 +138,7 @@ app.get("/questions/:category", async (req, res) => {
 });
 
 // Delete question
-app.delete("/delete-question/:id", async (req, res) => {
+app.delete("/admin/delete-question/:id", async (req, res) => {
   await Question.findByIdAndDelete(req.params.id);
   res.send("Deleted");
 });
