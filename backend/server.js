@@ -127,7 +127,7 @@ app.delete("/admin/delete/:id", async (req, res) => {
 // ================= QUESTIONS =================
 
 // Add question
-app.post("/admin/add-question", async (req, res) => {
+app.post("/add-question", async (req, res) => {
   const { category, question } = req.body;
   await Question.create({ category, question });
   res.send("Question added");
