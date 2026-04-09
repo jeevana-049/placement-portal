@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
+import { themes, cardStyle } from "../styles/theme";
 
 function Admin() {
   const [experiences, setExperiences] = useState([]);
   const [question, setQuestion] = useState("");
   const [category, setCategory] = useState("aptitude");
+  const [questions, setQuestions] = useState([]);
+
+  const theme = themes.admin;
 
   useEffect(() => {
     fetchExperiences();
-  }, []);
+    fetchQuestions();
+    // eslint-disable-next-line
+  }, [category]);
 
-  // 📥 GET ALL EXPERIENCES
+  // 📥 GET EXPERIENCES
   const fetchExperiences = async () => {
     try {
       const res = await axios.get(
@@ -23,20 +29,41 @@ function Admin() {
     }
   };
 
-  // ✅ APPROVE
-  const approve = async (id) => {
-    await axios.put(
-      `https://placement-portal-v7e6.onrender.com/admin/approve/${id}`
-    );
-    fetchExperiences();
+  // 📥 GET QUESTIONS
+  const fetchQuestions = async () => {
+    try {
+      const res = await axios.get(
+        `https://placement-portal-v7e6.onrender.com/questions/${category}`
+      );
+      setQuestions(res.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  // ❌ DELETE
+  // ✅ APPROVE
+  const approve = async (id) => {
+    try {
+      await axios.put(
+        `https://placement-portal-v7e6.onrender.com/admin/approve/${id}`
+      );
+      alert("Approved ✅");
+      fetchExperiences();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // ❌ DELETE EXPERIENCE
   const remove = async (id) => {
-    await axios.delete(
-      `https://placement-portal-v7e6.onrender.com/admin/delete/${id}`
-    );
-    fetchExperiences();
+    try {
+      await axios.delete(
+        `https://placement-portal-v7e6.onrender.com/admin/delete/${id}`
+      );
+      fetchExperiences();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // ➕ ADD QUESTION
@@ -53,16 +80,30 @@ function Admin() {
 
     alert("Question Added ✅");
     setQuestion("");
+    fetchQuestions();
+  };
+
+  // ❌ DELETE QUESTION
+  const deleteQuestion = async (id) => {
+    try {
+      await axios.delete(
+        `https://placement-portal-v7e6.onrender.com/admin/delete-question/${id}`
+      );
+      alert("Deleted ✅");
+      fetchQuestions();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
-    <div style={styles.container}>
+    <div style={{ ...styles.container, background: theme.bg }}>
       <Navbar />
 
       <h2 style={styles.heading}>Admin Panel</h2>
 
       {/* ADD QUESTION */}
-      <div style={styles.box}>
+      <div style={{ ...styles.box, boxShadow: `0 0 20px ${theme.glow}` }}>
         <h3>Add StudyHub Question</h3>
 
         <select
@@ -87,11 +128,27 @@ function Admin() {
         </button>
       </div>
 
+      {/* QUESTIONS LIST */}
+      <h3 style={styles.heading}>Manage Questions</h3>
+
+      {questions.map((q) => (
+        <div key={q._id} style={cardStyle(theme.glow)}>
+          <p>{q.question}</p>
+
+          <button
+            onClick={() => deleteQuestion(q._id)}
+            style={styles.delete}
+          >
+            Delete ❌
+          </button>
+        </div>
+      ))}
+
       {/* EXPERIENCES */}
       <h3 style={styles.heading}>Manage Experiences</h3>
 
       {experiences.map((exp) => (
-        <div key={exp._id} style={styles.card}>
+        <div key={exp._id} style={cardStyle(theme.glow)}>
           <h4>{exp.company}</h4>
           <p>{exp.rounds}</p>
 
@@ -111,57 +168,66 @@ function Admin() {
 const styles = {
   container: {
     minHeight: "100vh",
-    background: "linear-gradient(135deg,#1e3c72,#2a5298)",
     color: "white",
     paddingBottom: "40px",
   },
+
   heading: {
     textAlign: "center",
     marginTop: "20px",
   },
+
   box: {
     width: "400px",
     margin: "20px auto",
     padding: "20px",
-    background: "white",
-    color: "black",
+    background: "rgba(255,255,255,0.1)",
+    backdropFilter: "blur(10px)",
     borderRadius: "12px",
     display: "flex",
     flexDirection: "column",
     gap: "10px",
   },
+
   input: {
     padding: "10px",
+    borderRadius: "8px",
   },
+
   textarea: {
     padding: "10px",
+    borderRadius: "8px",
   },
+
   button: {
-    background: "#4caf50",
+    background: "#00c6ff",
     color: "white",
     padding: "10px",
     border: "none",
-  },
-  card: {
-    background: "white",
-    color: "black",
-    margin: "15px auto",
-    padding: "15px",
-    width: "60%",
     borderRadius: "10px",
+    boxShadow: "0 0 10px #00c6ff",
+    cursor: "pointer",
   },
+
   approve: {
-    background: "green",
-    color: "white",
+    background: "#00ff9f",
+    color: "black",
+    padding: "8px",
+    border: "none",
+    borderRadius: "8px",
     marginRight: "10px",
-    padding: "8px",
-    border: "none",
+    boxShadow: "0 0 10px #00ff9f",
+    cursor: "pointer",
   },
+
   delete: {
-    background: "red",
+    background: "#ff4d4d",
     color: "white",
     padding: "8px",
     border: "none",
+    borderRadius: "8px",
+    boxShadow: "0 0 10px #ff4d4d",
+    cursor: "pointer",
   },
 };
 

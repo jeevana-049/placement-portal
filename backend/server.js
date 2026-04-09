@@ -110,10 +110,12 @@ app.get("/admin/experiences", async (req, res) => {
 
 // Approve experience
 app.put("/admin/approve/:id", async (req, res) => {
-  await Experience.findByIdAndUpdate(req.params.id, {
-    status: "approved"
-  });
-  res.send("Approved ✅");
+  try {
+    await Experience.findByIdAndUpdate(req.params.id, {
+      status: "approved"
+  }); catch (err) {
+    res.send("Approved ✅");
+  }
 });
 
 // Delete experience

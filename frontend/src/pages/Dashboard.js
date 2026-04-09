@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
+import { themes, cardStyle } from "../styles/theme";
 
 function Dashboard() {
-  const [data, setData] = useState([]);
+  const [experiences, setExperiences] = useState([]); // ✅ FIXED
+
+  const theme = themes.dashboard;
 
   useEffect(() => {
     fetchExperiences();
@@ -14,65 +17,36 @@ function Dashboard() {
       const res = await axios.get(
         "https://placement-portal-v7e6.onrender.com/experiences"
       );
-      setData(res.data);
+      setExperiences(res.data); // ✅ FIXED
     } catch (err) {
       console.log(err);
     }
   };
 
   return (
-    <div style={styles.container}>
+    <div style={{ minHeight: "100vh", background: theme.bg }}>
       <Navbar />
 
-      <h2 style={styles.heading}>All Experiences</h2>
+      <h2 style={{ textAlign: "center", color: "white" }}>
+        Experiences
+      </h2>
 
-      {data.length === 0 ? (
-        <h3 style={styles.msg}>
-          No experiences yet (or not approved)
-        </h3>
+      {experiences.length === 0 ? (
+        <p style={{ textAlign: "center", color: "white" }}>
+          No experiences yet...
+        </p>
       ) : (
-        data.map((exp, index) => (
-          <div key={index} style={styles.card}>
-            <h3 style={styles.company}>{exp.company}</h3>
-            <p><b>Rounds:</b> {exp.rounds}</p>
-            <p><b>Technical:</b> {exp.technicalQuestions}</p>
-            <p><b>HR:</b> {exp.hrQuestions}</p>
-            <p><b>Tips:</b> {exp.tips}</p>
+        experiences.map((exp) => (
+          <div key={exp._id} style={cardStyle(theme.glow)}>
+            <h3>{exp.company}</h3>
+            <p>{exp.rounds}</p>
+            <p>{exp.technicalQuestions}</p>
+            <p>{exp.hrQuestions}</p>
           </div>
         ))
       )}
     </div>
   );
 }
-
-const styles = {
-  container: {
-    minHeight: "100vh",
-    background: "linear-gradient(135deg,#1e3c72,#2a5298)",
-    paddingBottom: "40px",
-    color: "white",
-  },
-  heading: {
-    textAlign: "center",
-    marginTop: "20px",
-  },
-  msg: {
-    textAlign: "center",
-    marginTop: "50px",
-    color: "#ffcc00",
-  },
-  card: {
-    width: "60%",
-    margin: "20px auto",
-    padding: "20px",
-    background: "white",
-    color: "black",
-    borderRadius: "12px",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
-  },
-  company: {
-    color: "#2a5298",
-  },
-};
 
 export default Dashboard;
