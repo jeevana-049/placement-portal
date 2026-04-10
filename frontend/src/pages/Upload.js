@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 function Upload() {
-  const navigate = useNavigate();
-
   const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     company: "",
@@ -16,7 +15,7 @@ function Upload() {
     tips: "",
   });
 
-   // 🔐 CHECK LOGIN
+  // 🔐 CHECK LOGIN
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) setLoggedIn(true);
@@ -30,7 +29,6 @@ function Upload() {
         return;
       }
 
-      // ✅ CORRECT BACKEND URL
       await axios.post(
         "https://placement-portal-v7e6.onrender.com/experience",
         form
@@ -47,7 +45,7 @@ function Upload() {
         tips: "",
       });
 
-      // ✅ FIXED REDIRECT (NO 404)
+      // ✅ redirect AFTER success
       navigate("/dashboard");
 
     } catch (err) {
@@ -63,12 +61,12 @@ function Upload() {
       <h2 style={styles.heading}>Upload Experience</h2>
 
       {!loggedIn ? (
-        <h3 style={styles.msg}>🔒 Only users can upload</h3>
+        <h3 style={styles.msg}>🔒 Login to upload experience</h3>
       ) : (
         <div style={styles.box}>
           
-          <textarea
-            style={styles.textarea}
+          <input
+            style={styles.input}
             placeholder="Company Name"
             value={form.company}
             onChange={(e) =>
@@ -76,8 +74,8 @@ function Upload() {
             }
           />
 
-          <textarea
-            style={styles.textarea}
+          <input
+            style={styles.input}
             placeholder="Number of Rounds"
             value={form.rounds}
             onChange={(e) =>
@@ -124,7 +122,7 @@ function Upload() {
 const styles = {
   container: {
     minHeight: "100vh",
-    background: "linear-gradient(135deg,#0f2027,#203a43,#2c5364)",
+    background: "#1e3c72",
     color: "white",
   },
   heading: {
@@ -134,32 +132,33 @@ const styles = {
   msg: {
     textAlign: "center",
     marginTop: "50px",
-    color: "#ffcc00",
   },
   box: {
-    width: "450px",
+    width: "400px",
     margin: "40px auto",
-    padding: "30px",
+    padding: "25px",
     background: "white",
-    borderRadius: "15px",
+    borderRadius: "10px",
     display: "flex",
     flexDirection: "column",
-    gap: "15px",
+    gap: "10px",
+  },
+  input: {
+    padding: "10px",
+    borderRadius: "6px",
+    border: "1px solid #ccc",
   },
   textarea: {
-    padding: "16px",
-    fontSize: "16px",
-    borderRadius: "10px",
+    padding: "10px",
+    borderRadius: "6px",
     border: "1px solid #ccc",
-    minHeight: "80px",
   },
   button: {
-    padding: "14px",
-    fontSize: "16px",
-    borderRadius: "10px",
-    border: "none",
-    background: "#5a67d8",
+    padding: "12px",
+    background: "#2563eb",
     color: "white",
+    border: "none",
+    borderRadius: "6px",
     cursor: "pointer",
   },
 };
